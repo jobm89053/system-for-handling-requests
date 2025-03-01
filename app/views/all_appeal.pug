@@ -4,6 +4,9 @@ block content
   h1= title
   p Все обращения
 
+  // Кнопка для отмены всех обращений в статусе "В работе"
+  
+
   // Форма для фильтрации
   form(method="GET", action="/all_appeal")
     div
@@ -48,3 +51,7 @@ block content
 
   a(href="/create_appeal")
     button(type="button") Создать обращение
+
+  .action-buttons
+    form(method="POST", action="/cancel_all_in_progress")
+      button(type="submit") Отменить все в работе

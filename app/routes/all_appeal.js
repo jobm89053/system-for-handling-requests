@@ -129,5 +129,27 @@ router.post('/appeal_solution/:appeal_id/cancel', async (req, res, next) => {
     next(err);
   }
 });
+router.post('/cancel_all_in_progress', async (req, res, next) => {
+  let connection;
+  try {
+    // Подключение к базе данных
+    connection = await mysql.createConnection(CONFIG);
+
+    // SQL-запрос для обновления статуса всех обращений в статусе "В работе"
+    const [result] = await connection.execute(
+      'UPDATE requests SET status = "Отменено", cancellationReason = "Массовая отмена" WHERE status = "В работе"'
+    );
+
+    // Закрываем соединение с базой данных
+    await connection.end();
+
+    // Перенаправляем на страницу со списком обращений
+    res.redirect('/all_appeal');
+  } catch (err) {
+    // Обработка ошибок
+    console.error('Ошибка при отмене обращений:', err);
+    next(err);
+  }
+});
 
 module.exports = router;
