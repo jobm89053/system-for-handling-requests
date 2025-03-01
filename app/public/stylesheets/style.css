@@ -358,3 +358,123 @@ button:hover {
     width: 100%; /* Кнопки занимают всю ширину */
   }
 }
+/* styles.css */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  color: #333;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Стили для контейнера фильтров */
+.filters-container {
+  display: flex;
+  gap: 10px; /* Расстояние между элементами */
+  align-items: flex-end; /* Выравнивание по нижнему краю */
+  margin-bottom: 20px; /* Отступ снизу */
+}
+
+.filters-container .filter-item {
+  flex: 1; /* Растягиваем каждый элемент на всю доступную ширину */
+  display: flex;
+  flex-direction: column; /* Элементы внутри фильтра выстраиваются в столбец */
+}
+
+.filters-container label {
+  margin-bottom: 5px; /* Отступ снизу от label */
+  font-weight: bold; /* Жирный шрифт для label */
+}
+
+.filters-container input[type="date"] {
+  width: 100%; /* Поля ввода занимают всю ширину */
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.filters-container button {
+  padding: 10px 20px;
+  background-color: #4CAF50; /* Зеленый цвет */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.filters-container button:hover {
+  background-color: #45a049; /* Темно-зеленый цвет при наведении */
+}
+
+/* Стили для контейнера кнопок */
+.buttons-container {
+  display: flex;
+  gap: 10px; /* Расстояние между кнопками */
+  justify-content: center; /* Центрируем кнопки */
+  margin-top: 20px; /* Отступ сверху */
+  margin-bottom: 20px; /* Отступ снизу */
+}
+
+.buttons-container button {
+  padding: 10px 20px;
+  background-color: #4CAF50; /* Зеленый цвет */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.buttons-container button:hover {
+  background-color: #45a049; /* Темно-зеленый цвет при наведении */
+}
+
+/* Стили для таблицы */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+table th, table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+table th {
+  background-color: #f2f2f2;
+}
+
+/* Стили для ссылок */
+a.appeal-text {
+  color: black;
+  text-decoration: none;
+}
+
+a.appeal-text:hover {
+  text-decoration: underline;
+}
+
+/* Стили для неактивной кнопки */
+button:disabled {
+  background-color: #ccc; /* Серый цвет */
+  cursor: not-allowed; /* Курсор "недоступно" */
+}
