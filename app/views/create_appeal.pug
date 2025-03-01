@@ -14,10 +14,7 @@ block content
         label(for="text") Текст обращения:
         textarea(name="text", id="text", rows="5", required)
 
-      div.form-group
+      div.buttons-container
         button(type="submit") Создать
-
-    // Кнопка для возврата к списку обращений
-    .buttons-container
-      a(href="/all_appeal")
-        button(type="button") Вернуться к списку
+        a(href="/all_appeal")
+          button(type="button") Вернуться к списку
