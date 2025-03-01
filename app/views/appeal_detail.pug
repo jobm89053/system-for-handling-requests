@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  h1= title
+
+  // Детальная информация об обращении
+  div
+    h2= appeal.topic
+    p= appeal.text
+    p Статус: #{appeal.status}
+    p Решение: #{appeal.solution || '—'}
+    p Дата создания: #{appeal.createdAt}
+    p Причина отмены: #{appeal.cancellationReason || '—'}
+
+  // Кнопка для возврата к списку обращений
+  a(href="/all_appeal")
+    button(type="button") Вернуться к списку обращений

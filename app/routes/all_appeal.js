@@ -151,5 +151,39 @@ router.post('/cancel_all_in_progress', async (req, res, next) => {
     next(err);
   }
 });
+router.get('/appeal_detail/:appeal_id', async (req, res, next) => {
+  let connection;
+  try {
+    const appealId = req.params.appeal_id;
+
+    // Подключение к базе данных
+    connection = await mysql.createConnection(CONFIG);
+
+    // Получаем данные об обращении по его ID
+    const [data] = await connection.execute(
+      'SELECT * FROM requests WHERE id = ?',
+      [appealId]
+    );
+
+    // Если обращение найдено, передаем его в шаблон
+    if (data.length > 0) {
+      res.render('appeal_detail', {
+        title: 'Детали обращения',
+        appeal: data[0],
+      });
+    } else {
+      // Если обращение не найдено, возвращаем 404
+      res.status(404).send('Обращение не найдено');
+    }
+  } catch (err) {
+    // Обработка ошибок
+    next(err);
+  } finally {
+    // Закрываем соединение, если оно было создано
+    if (connection) {
+      await connection.end();
+    }
+  }
+});
 
 module.exports = router;

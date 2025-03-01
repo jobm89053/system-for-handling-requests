@@ -5,7 +5,8 @@ block content
   p Все обращения
 
   // Кнопка для отмены всех обращений в статусе "В работе"
-  
+  form(method="POST", action="/cancel_all_in_progress")
+    button(type="submit") Отменить все в работе
 
   // Форма для фильтрации
   form(method="GET", action="/all_appeal")
@@ -38,7 +39,8 @@ block content
       each appeal in appeals
         tr
           td= appeal.topic
-          td= appeal.text
+          td
+            a(href=`/appeal_detail/${appeal.id}`)= appeal.text
           td.status-cell(data-status=appeal.status)= appeal.status
           td= appeal.solution || '—'
           td= appeal.createdAt
@@ -51,7 +53,3 @@ block content
 
   a(href="/create_appeal")
     button(type="button") Создать обращение
-
-  .action-buttons
-    form(method="POST", action="/cancel_all_in_progress")
-      button(type="submit") Отменить все в работе
