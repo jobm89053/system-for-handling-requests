@@ -4,9 +4,6 @@ block content
   h1= title
   p Все обращения
 
-  a(href="/all_apeal/create")
-    button(type="button") Создать обращение
-
   // Форма для фильтрации
   form(method="GET", action="/all_appeal")
     div
@@ -31,6 +28,7 @@ block content
         th Тема
         th Текст
         th Статус
+        th Решение
         th Дата создания
         th Действия
     tbody
@@ -39,64 +37,11 @@ block content
           td= appeal.topic
           td= appeal.text
           td= appeal.status
+          td= appeal.solution || '—'
           td= appeal.createdAt
           td
-            button(type="button", onclick=`takeAppeal(${appeal.id})`) Взять в работу
-            button(type="button", onclick=`completeAppeal(${appeal.id})`) Завершить
-            button(type="button", onclick=`cancelAppeal(${appeal.id})`) Отмена
+            a(href=`/appeal_solution/${appeal.id}`)
+              button(type="button") Взять в работу
 
-  a(href="/all_apeal/create")
+  a(href="/create_appeal")
     button(type="button") Создать обращение
-
-  // Скрипт для удаления параметров из URL при обновлении страницы
-  script.
-    // Удаляем параметры из URL при обновлении страницы
-    if (window.history.replaceState) {
-      const cleanUrl = window.location.origin + window.location.pathname;
-      window.history.replaceState(null, null, cleanUrl);
-    }
-
-    // Функция для взятия обращения в работу
-    async function takeAppeal(appealId) {
-      try {
-        const response = await fetch(`/appeal/${appealId}/take`, { method: 'POST' });
-        if (response.ok) {
-          alert('Обращение взято в работу!');
-          location.reload(); // Перезагрузить страницу для обновления данных
-        } else {
-          alert('Ошибка при взятии обращения в работу');
-        }
-      } catch (error) {
-        console.error('Ошибка:', error);
-      }
-    }
-
-    // Функция для завершения обработки обращения
-    async function completeAppeal(appealId) {
-      try {
-        const response = await fetch(`/appeal/${appealId}/complete`, { method: 'POST' });
-        if (response.ok) {
-          alert('Обработка обращения завершена!');
-          location.reload(); // Перезагрузить страницу для обновления данных
-        } else {
-          alert('Ошибка при завершении обработки обращения');
-        }
-      } catch (error) {
-        console.error('Ошибка:', error);
-      }
-    }
-
-    // Функция для отмены обращения
-    async function cancelAppeal(appealId) {
-      try {
-        const response = await fetch(`/appeal/${appealId}/cancel`, { method: 'POST' });
-        if (response.ok) {
-          alert('Обращение отменено!');
-          location.reload(); // Перезагрузить страницу для обновления данных
-        } else {
-          alert('Ошибка при отмене обращения');
-        }
-      } catch (error) {
-        console.error('Ошибка:', error);
-      }
-    }

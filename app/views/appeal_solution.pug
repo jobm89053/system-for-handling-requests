@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  h1 ЗОбработка обращения ##{appeal.id}
+
+  p Тема: #{appeal.topic}
+  p Текст обращения: #{appeal.text}
+
+  form(method="POST", action=`/appeal_solution/${appeal.id}/handle`)
+    div
+      label(for="response") Решение или причина отмены:
+      textarea(name="response", placeholder="Введите решение или причину отмены", rows="5", cols="40", required)
+    div
+      button(type="submit", name="action", value="complete") Завершить
+      button(type="submit", name="action", value="cancel") Отменить

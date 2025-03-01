@@ -7,6 +7,7 @@ const logger = require('morgan');
 const all_appealRouter = require('./routes/all_appeal');
 const create_appealRouter = require('./routes/create_appeal');
 const appeal_detailsRouter = require('./routes/appeal_details');
+const appeal_solutionRouter = require('./routes/appeal_solution');
 
 
 const app = express();
@@ -25,7 +26,7 @@ app.use('/', all_appealRouter);
 app.use('/all_appeal', all_appealRouter);
 app.use('/create_appeal', create_appealRouter);
 app.use('/appeal_details', appeal_detailsRouter);
-
+app.use('/appeal_solution', appeal_solutionRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
