@@ -47,29 +47,85 @@ router.get('/all_appeal', async function (req, res, next) {
   }
 });
 
-// Маршрут для отмены всех обращений в статусе "В работе"
-router.post('/cancel_all_in_progress', async (req, res, next) => {
+// Маршрут для взятия обращения в работу
+router.post('/appeal_solution/:appeal_id/take_to_work', async (req, res, next) => {
   let connection;
   try {
+    const appealId = req.params.appeal_id;
+
     // Подключение к базе данных
     connection = await mysql.createConnection(CONFIG);
 
-    // SQL-запрос для обновления статуса всех обращений в статусе "В работе"
-    const [result] = await connection.execute(
-      'UPDATE requests SET status = "Отменено", cancellationReason = "Массовая отмена" WHERE status = "В работе"'
+    // Обновляем статус обращения на "В работе"
+    await connection.execute(
+      'UPDATE requests SET status = "В работе" WHERE id = ?',
+      [appealId]
     );
 
     // Закрываем соединение с базой данных
     await connection.end();
 
-    // Отправляем ответ с количеством отмененных обращений
-    res.json({
-      message: 'Все обращения в статусе "В работе" отменены',
-      affectedRows: result.affectedRows,
-    });
+    // Перенаправляем на страницу завершения обращения
+    res.redirect(`/appeal_solution/${appealId}`);
   } catch (err) {
     // Обработка ошибок
-    console.error('Ошибка при отмене обращений:', err);
+    console.error('Ошибка при взятии обращения в работу:', err);
+    next(err);
+  }
+});
+
+// Маршрут для завершения обращения
+router.post('/appeal_solution/:appeal_id/complete', async (req, res, next) => {
+  let connection;
+  try {
+    const appealId = req.params.appeal_id;
+    const { solution } = req.body;
+
+    // Подключение к базе данных
+    connection = await mysql.createConnection(CONFIG);
+
+    // Обновляем статус обращения на "Завершено"
+    await connection.execute(
+      'UPDATE requests SET status = "Завершено", solution = ? WHERE id = ?',
+      [solution, appealId]
+    );
+
+    // Закрываем соединение с базой данных
+    await connection.end();
+
+    // Перенаправляем на страницу со списком обращений
+    res.redirect('/all_appeal');
+  } catch (err) {
+    // Обработка ошибок
+    console.error('Ошибка при завершении обращения:', err);
+    next(err);
+  }
+});
+
+// Маршрут для отмены обращения
+router.post('/appeal_solution/:appeal_id/cancel', async (req, res, next) => {
+  let connection;
+  try {
+    const appealId = req.params.appeal_id;
+    const { cancellationReason } = req.body;
+
+    // Подключение к базе данных
+    connection = await mysql.createConnection(CONFIG);
+
+    // Обновляем статус обращения на "Отменено"
+    await connection.execute(
+      'UPDATE requests SET status = "Отменено", cancellationReason = ? WHERE id = ?',
+      [cancellationReason, appealId]
+    );
+
+    // Закрываем соединение с базой данных
+    await connection.end();
+
+    // Перенаправляем на страницу со списком обращений
+    res.redirect('/all_appeal');
+  } catch (err) {
+    // Обработка ошибок
+    console.error('Ошибка при отмене обращения:', err);
     next(err);
   }
 });

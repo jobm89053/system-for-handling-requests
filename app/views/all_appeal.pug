@@ -36,12 +36,15 @@ block content
         tr
           td= appeal.topic
           td= appeal.text
-          td= appeal.status
+          td.status-cell(data-status=appeal.status)= appeal.status
           td= appeal.solution || '—'
           td= appeal.createdAt
           td
-            a(href=`/appeal_solution/${appeal.id}`)
-              button(type="button") Взять в работу
+            if appeal.status === 'Завершено' || appeal.status === 'Отменено'
+              button(type="button", disabled) Взять в работу
+            else
+              form(method="POST", action=`/appeal_solution/${appeal.id}/take_to_work`, style="display: inline;")
+                button(type="submit") Взять в работу
 
   a(href="/create_appeal")
     button(type="button") Создать обращение
