@@ -1,15 +1,37 @@
 extends layout
 
 block content
-  h1 ЗОбработка обращения ##{appeal.id}
+  .container
+    h1 Обработка обращения (ID: #{appeal.id})
 
-  p Тема: #{appeal.topic}
-  p Текст обращения: #{appeal.text}
+    // Информация об обращении
+    .appeal-info
+      p
+        strong Тема: 
+        | #{appeal.topic}
+      p
+        strong Текст: 
+        | #{appeal.text}
+      p
+        strong Статус: 
+        | #{appeal.status}
+      p
+        strong Дата создания: 
+        | #{appeal.createdAt ? appeal.createdAt.toLocaleDateString() : '—'}
+      p
+        strong Решение: 
+        | #{appeal.solution || '—'}
 
-  form(method="POST", action=`/appeal_solution/${appeal.id}/handle`)
-    div
-      label(for="response") Решение или причина отмены:
-      textarea(name="response", placeholder="Введите решение или причину отмены", rows="5", cols="40", required)
-    div
-      button(type="submit", name="action", value="complete") Завершить
-      button(type="submit", name="action", value="cancel") Отменить
+    // Форма для обработки обращения
+    form(method="POST", action=`/appeal_solution/${appeal.id}/complete`)
+      div.form-group
+        label(for="solution") Решение:
+        textarea(name="solution", id="solution", rows="5", required)
+
+      div.form-group
+        button(type="submit") Завершить
+
+    // Кнопки для действий
+    .buttons-container
+      a(href="/all_appeal")
+        button(type="button") Вернуться к списку

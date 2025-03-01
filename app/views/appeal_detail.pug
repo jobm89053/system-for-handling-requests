@@ -1,17 +1,35 @@
 extends layout
 
 block content
-  h1= title
+  .container
+    h1 Детали обращения № #{appeal.id}
 
-  // Детальная информация об обращении
-  div
-    h2= appeal.topic
-    p= appeal.text
-    p Статус: #{appeal.status}
-    p Решение: #{appeal.solution || '—'}
-    p Дата создания: #{appeal.createdAt}
-    p Причина отмены: #{appeal.cancellationReason || '—'}
+    // Информация об обращении
+    .appeal-info
+      p
+        strong Тема: 
+        | #{appeal.topic}
+      p
+        strong Текст: 
+        | #{appeal.text}
+      p
+        strong Статус: 
+        | #{appeal.status}
+      p
+        strong Дата создания: 
+        | #{appeal.createdAt ? appeal.createdAt.toLocaleDateString() : '—'}
+      p
+        strong Решение: 
+        | #{appeal.solution || '—'}
 
-  // Кнопка для возврата к списку обращений
-  a(href="/all_appeal")
-    button(type="button") Вернуться к списку обращений
+    // Кнопки для действий
+    .buttons-container
+      if appeal.status === 'Новое' || appeal.status === 'В работе'
+        form(method="POST", action=`/appeal_solution/${appeal.id}/take_to_work`, style="display: inline;")
+          button(type="submit") Взять в работу
+        form(method="POST", action=`/appeal_solution/${appeal.id}/complete`, style="display: inline;")
+          button(type="submit") Завершить
+        form(method="POST", action=`/appeal_solution/${appeal.id}/cancel`, style="display: inline;")
+          button(type="submit") Отменить
+      a(href="/all_appeal")
+        button(type="button") Вернуться к списку

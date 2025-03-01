@@ -1,55 +1,53 @@
 extends layout
 
 block content
-  h1= title
-  p Все обращения
+  .container
+    h1 Все обращения
 
-  // Кнопка для отмены всех обращений в статусе "В работе"
-  form(method="POST", action="/cancel_all_in_progress")
-    button(type="submit") Отменить все в работе
+    // Контейнер для фильтров
+    .filters-container
+      div.filter-item
+        label(for="date") Конкретная дата:
+        input(type="date", name="date", id="date", value=currentDate)
 
-  // Форма для фильтрации
-  form(method="GET", action="/all_appeal")
-    div
-      label(for="date") Конкретная дата:
-      input(type="date", name="date", id="date", value=currentDate)
+      div.filter-item
+        label(for="startDate") Начальная дата:
+        input(type="date", name="startDate", id="startDate", value=currentStartDate)
 
-    div
-      label(for="startDate") Начальная дата:
-      input(type="date", name="startDate", id="startDate", value=currentStartDate)
+      div.filter-item
+        label(for="endDate") Конечная дата:
+        input(type="date", name="endDate", id="endDate", value=currentEndDate)
 
-    div
-      label(for="endDate") Конечная дата:
-      input(type="date", name="endDate", id="endDate", value=currentEndDate)
+      div.filter-item
+        button(type="submit") Применить фильтры
 
-    div
-      button(type="submit") Применить фильтры
-
-  // Список обращений
-  table
-    thead
-      tr
-        th Тема
-        th Текст
-        th Статус
-        th Решение
-        th Дата создания
-        th Действия
-    tbody
-      each appeal in appeals
+    // Список обращений
+    table
+      thead
         tr
-          td= appeal.topic
-          td
-            a(href=`/appeal_detail/${appeal.id}`)= appeal.text
-          td.status-cell(data-status=appeal.status)= appeal.status
-          td= appeal.solution || '—'
-          td= appeal.createdAt
-          td
-            if appeal.status === 'Завершено' || appeal.status === 'Отменено'
-              button(type="button", disabled) Взять в работу
-            else
-              form(method="POST", action=`/appeal_solution/${appeal.id}/take_to_work`, style="display: inline;")
-                button(type="submit") Взять в работу
+          th Тема
+          th Текст
+          th Статус
+          th Дата создания
+          th Действия
+      tbody
+        each appeal in appeals
+          tr
+            td= appeal.topic
+            td
+              a.appeal-text(href=`/appeal_detail/${appeal.id}`)= appeal.text
+            td.status-cell(data-status=appeal.status)= appeal.status
+            td= appeal.createdAt ? appeal.createdAt.toLocaleDateString() : '—'
+            td
+              if appeal.status === 'Завершено' || appeal.status === 'Отменено'
+                button(type="button", disabled) Взять в работу
+              else
+                form(method="POST", action=`/appeal_solution/${appeal.id}/take_to_work`, style="display: inline;")
+                  button(type="submit") Взять в работу
 
-  a(href="/create_appeal")
-    button(type="button") Создать обращение
+    // Контейнер для кнопок
+    .buttons-container
+      a(href="/create_appeal")
+        button(type="button") Создать обращение
+      form(method="POST", action="/cancel_all_in_progress")
+        button(type="submit") Отменить все в работе
