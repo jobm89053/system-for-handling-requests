@@ -35,18 +35,18 @@ console.log(data);
 res.render('all_appeal', {
   title: 'system-for-handling-requests',
   appeals: data, // Передаем данные в шаблон
-  currentDate: date, // Передаем текущую дату для отображения в форме
-  currentStartDate: startDate, // Передаем начальную дату для отображения в форме
-  currentEndDate: endDate, // Передаем конечную дату для отображения в форме
+  currentDate: date || '', // Передаем текущую дату для отображения в форме (или пустую строку, если дата не указана)
+  currentStartDate: startDate || '', // Передаем начальную дату для отображения в форме (или пустую строку, если дата не указана)
+  currentEndDate: endDate || '', // Передаем конечную дату для отображения в форме (или пустую строку, если дата не указана)
 });
 } catch (err) {
-  // Обработка ошибок
-  next(err);
+// Обработка ошибок
+next(err);
 } finally {
-  // Закрываем соединение, если оно было создано
-  if (connection) {
-    await connection.end();
-  }
+// Закрываем соединение, если оно было создано
+if (connection) {
+  await connection.end();
+}
 }
 });
 

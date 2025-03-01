@@ -1,10 +1,11 @@
 module.exports = {
         get_all_appeals: 'SELECT * FROM requests',
-        get_appeals_by_status: 'SELECT * FROM requests WHERE status = ?',
+        //get_appeals_by_status: 'SELECT * FROM requests WHERE status = ?',
         get_appeals_by_date: 'SELECT * FROM requests WHERE DATE(createdAt) = ?',
         get_appeals_by_between_date: 'SELECT * FROM requests WHERE DATE(createdAt) BETWEEN ? AND ?',
         take_appeal: 'UPDATE requests SET status = "В работе" WHERE id = ?',
         complete_appeal: 'UPDATE requests SET status = "Завершено" WHERE id = ?',
         cancel_appeal: 'UPDATE requests SET status = "Отменено" WHERE id = ?',
         cancel_all_in_progress: 'UPDATE requests SET status = "Отменено" WHERE status = "В работе"',
+        create_appeal: 'INSERT INTO requests (topic, text)  VALUES (?, ?)',
       };
