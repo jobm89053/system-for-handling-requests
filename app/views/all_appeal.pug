@@ -2,4 +2,37 @@ extends layout
 
 block content
   h1= title
-  p Welcome to #{title}
+  p Все обращения
+
+  // Форма для фильтрации
+  form(method="GET", action="/all_apeal")
+    div
+      label(for="date") Конкретная дата:
+      input(type="date", name="date", id="date")
+
+    div
+      label(for="startDate") Начальная дата:
+      input(type="date", name="startDate", id="startDate")
+
+    div
+      label(for="endDate") Конечная дата:
+      input(type="date", name="endDate", id="endDate")
+
+    div
+      button(type="submit") Применить фильтры
+
+  // Список обращений
+  table
+    thead
+      tr
+        th Тема
+        th Текст
+        th Статус
+        th Дата создания
+    tbody
+      each appeal in appeals
+        tr
+          td= appeal.topic
+          td= appeal.text
+          td= appeal.status
+          td= appeal.createdAt
