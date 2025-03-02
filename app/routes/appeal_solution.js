@@ -46,17 +46,6 @@ router.post('/:appeal_id/handle', async (req, res, next) => {
       // Отмена обращения
       await connection.execute('UPDATE requests SET status = "Отменено", cancellationReason = ? WHERE id = ?', [response, appealId]);
     }
-    router.post('/cancel-all-in-progress', async (req, res, next) => {
-  try {
-    const connection = await mysql.createConnection(CONFIG);
-    await connection.execute(Q.cancel_all_in_progress);
-    await connection.end();
-    res.redirect('/all_apeal');
-  } catch (err) {
-    next(err);
-  }
-});
-
 
     // Закрываем соединение с базой данных
     await connection.end();
@@ -66,6 +55,18 @@ router.post('/:appeal_id/handle', async (req, res, next) => {
   } catch (err) {
     // Обработка ошибок
     console.error('Ошибка при обработке обращения:', err);
+    next(err);
+  }
+});
+
+// Маршрут для отмены всех обращений в статусе "В процессе"
+router.post('/cancel-all-in-progress', async (req, res, next) => {
+  try {
+    const connection = await mysql.createConnection(CONFIG);
+    await connection.execute('UPDATE requests SET status = "Отменено" WHERE status = "В процессе"');
+    await connection.end();
+    res.redirect('/all_appeal');
+  } catch (err) {
     next(err);
   }
 });

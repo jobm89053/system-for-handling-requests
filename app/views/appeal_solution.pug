@@ -18,17 +18,16 @@ block content
       p
         strong Дата создания: 
         | #{appeal.createdAt ? appeal.createdAt.toLocaleDateString() : '—'}
-      p
-        strong Решение: 
-        | #{appeal.solution || '—'}
+
 
     // Форма для обработки обращения
-    form(method="POST", action=`/appeal_solution/${appeal.id}/complete`)
+    form(method="POST", action=`/appeal_solution/${appeal.id}/handle`)
       div.form-group
-        label(for="solution") Решение:
-        textarea(name="solution", id="solution", rows="5", required)
+        label(for="response") Решение / Причина отмены:
+        textarea(name="response", id="response", rows="5", required)
 
       div.buttons-container
-        button(type="submit") Завершить
+        button(type="submit", name="action", value="complete") Завершить
+        button(type="submit", name="action", value="cancel") Отменить
         a(href="/all_appeal")
           button(type="button") Вернуться к списку
