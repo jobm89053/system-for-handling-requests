@@ -46,7 +46,6 @@ router.get('/all_appeal', async function (req, res, next) {
     }
   }
 });
-
 // Маршрут для взятия обращения в работу
 router.post('/appeal_solution/:appeal_id/take_to_work', async (req, res, next) => {
   let connection;
