@@ -2,7 +2,7 @@ extends layout
 
 block content
   .container
-    h1 Все обращения
+    h1 Cистема работы с обращениями 
 
     // Контейнер для фильтров
     .filters-container
@@ -20,13 +20,6 @@ block content
 
       div.filter-item
         button(type="submit") Применить фильтры
-
-    // Контейнер для кнопок
-    .buttons-container
-      a(href="/create_appeal")
-        button(type="button") Создать обращение
-      form(method="POST", action="/cancel_all_in_progress")
-        button(type="submit") Отменить все в работе
 
     // Список обращений
     table
@@ -51,3 +44,9 @@ block content
               else
                 form(method="POST", action=`/appeal_solution/${appeal.id}/take_to_work`, style="display: inline;")
                   button(type="submit") Взять в работу
+    // Контейнер для кнопок
+    .buttons-container
+      a(href="/create_appeal")
+        button(type="button") Создать обращение
+      form(method="POST", action="/cancel_all_in_progress")
+        button(type="submit") Отменить все в работе
