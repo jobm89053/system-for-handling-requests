@@ -4,7 +4,11 @@ module.exports = {
         get_appeals_by_date: 'SELECT * FROM requests WHERE DATE(createdAt) = ?',
         get_appeals_by_between_date: 'SELECT * FROM requests WHERE DATE(createdAt) BETWEEN ? AND ?',
         create_appeal: 'INSERT INTO requests (topic, text)  VALUES (?, ?)',
-        take_appeal: 'UPDATE appeals SET status = "В работе" WHERE id = ?',
-        complete_appeal: 'UPDATE appeals SET status = "Завершено", solution = ?, completedAt = NOW() WHERE id = ?',
-        cancel_appeal: 'UPDATE appeals SET status = "Отменено" WHERE id = ?',
+        take_appeal: 'UPDATE requests SET status = "В работе" WHERE id = ?',
+        //complete_appeal: 'UPDATE requests SET status = "Завершено", solution = ?, completedAt = NOW() WHERE id = ?',
+        cancel_appeal: 'UPDATE requests SET status = "Отменено", cancellationReason = ? WHERE id = ?',
+        complete_appeal:'UPDATE requests SET status = "Завершено", solution = ? WHERE id = ?',
+        cancel_appeal_in_work: 'UPDATE requests SET status = "Отменено", cancellationReason = "Массовая отмена" WHERE status = "В работе"',
+        take_one_appeal: 'SELECT * FROM requests WHERE id = ?',
+        
       };

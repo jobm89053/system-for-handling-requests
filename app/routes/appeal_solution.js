@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mysql = require('mysql2/promise');
 const CONFIG = require('../db/config');
+const Q = require('../db/queries');
 
 // Маршрут для отображения страницы завершения обращения
 router.get('/:appeal_id', async (req, res, next) => {
@@ -12,7 +13,7 @@ router.get('/:appeal_id', async (req, res, next) => {
     const connection = await mysql.createConnection(CONFIG);
 
     // Запрос к базе данных для получения данных обращения
-    const [rows] = await connection.execute('SELECT * FROM requests WHERE id = ?', [appealId]);
+    const [rows] = await connection.execute(Q.take_one_appeal, [appealId]);
 
     // Закрываем соединение с базой данных
     await connection.end();
@@ -41,10 +42,10 @@ router.post('/:appeal_id/handle', async (req, res, next) => {
 
     if (action === 'complete') {
       // Завершение обращения
-      await connection.execute('UPDATE requests SET status = "Завершено", solution = ? WHERE id = ?', [response, appealId]);
+      await connection.execute(Q.complete_appeal, [response, appealId]);
     } else if (action === 'cancel') {
       // Отмена обращения
-      await connection.execute('UPDATE requests SET status = "Отменено", cancellationReason = ? WHERE id = ?', [response, appealId]);
+      await connection.execute(Q.cancel_appeal, [response, appealId]);
     }
 
     // Закрываем соединение с базой данных
@@ -63,7 +64,7 @@ router.post('/:appeal_id/handle', async (req, res, next) => {
 router.post('/cancel-all-in-progress', async (req, res, next) => {
   try {
     const connection = await mysql.createConnection(CONFIG);
-    await connection.execute('UPDATE requests SET status = "Отменено" WHERE status = "В процессе"');
+    await connection.execute(Q.cancel_appeal_in_work);
     await connection.end();
     res.redirect('/all_appeal');
   } catch (err) {

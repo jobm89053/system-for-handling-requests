@@ -57,7 +57,7 @@ router.post('/appeal_solution/:appeal_id/take_to_work', async (req, res, next) =
 
     // Обновляем статус обращения на "В работе"
     await connection.execute(
-      'UPDATE requests SET status = "В работе" WHERE id = ?',
+     Q.take_appeal,
       [appealId]
     );
 
@@ -85,7 +85,7 @@ router.post('/appeal_solution/:appeal_id/complete', async (req, res, next) => {
 
     // Обновляем статус обращения на "Завершено"
     await connection.execute(
-      'UPDATE requests SET status = "Завершено", solution = ? WHERE id = ?',
+      Q.complete_appeal,
       [solution, appealId]
     );
 
@@ -101,7 +101,7 @@ router.post('/appeal_solution/:appeal_id/complete', async (req, res, next) => {
   }
 });
 
-// Маршрут для отмены обращения
+
 router.post('/appeal_solution/:appeal_id/cancel', async (req, res, next) => {
   let connection;
   try {
@@ -113,7 +113,7 @@ router.post('/appeal_solution/:appeal_id/cancel', async (req, res, next) => {
 
     // Обновляем статус обращения на "Отменено"
     await connection.execute(
-      'UPDATE requests SET status = "Отменено", cancellationReason = ? WHERE id = ?',
+      Q.cancel_appeal,
       [cancellationReason, appealId]
     );
 
@@ -136,7 +136,7 @@ router.post('/cancel_all_in_progress', async (req, res, next) => {
 
     // SQL-запрос для обновления статуса всех обращений в статусе "В работе"
     const [result] = await connection.execute(
-      'UPDATE requests SET status = "Отменено", cancellationReason = "Массовая отмена" WHERE status = "В работе"'
+      Q.cancel_appeal_in_work
     );
 
     // Закрываем соединение с базой данных
@@ -160,7 +160,7 @@ router.get('/appeal_detail/:appeal_id', async (req, res, next) => {
 
     // Получаем данные об обращении по его ID
     const [data] = await connection.execute(
-      'SELECT * FROM requests WHERE id = ?',
+      Q.take_one_appeal,
       [appealId]
     );
 

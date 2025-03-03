@@ -18,9 +18,18 @@ block content
       p
         strong Дата создания: 
         | #{appeal.createdAt ? appeal.createdAt.toLocaleDateString() : '—'}
-      p
-        strong Решение: 
-        | #{appeal.solution || '—'}
+
+      // Отображение решения, если статус "Завершено"
+      if appeal.status === 'Завершено'
+        p
+          strong Решение: 
+          | #{appeal.solution || '—'}
+
+      // Отображение причины отмены, если статус "Отменено"
+      if appeal.status === 'Отменено'
+        p
+          strong Причина отмены: 
+          | #{appeal.cancellationReason || '—'}
 
     // Кнопки для действий
     .buttons-container
