@@ -4,7 +4,6 @@ block content
   .container
     h1 Обработка обращения (№ #{appeal.id})
 
-    // Информация об обращении
     .appeal-info
       p
         strong Тема: 
@@ -19,8 +18,6 @@ block content
         strong Дата создания: 
         | #{appeal.createdAt ? appeal.createdAt.toLocaleDateString() : '—'}
 
-
-    // Форма для обработки обращения
     form(method="POST", action=`/appeal_solution/${appeal.id}/handle`)
       div.form-group
         label(for="response") Решение / Причина отмены:

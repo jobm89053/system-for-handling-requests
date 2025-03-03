@@ -3,7 +3,6 @@ const router = express.Router();
 const mysql = require('mysql2/promise');
 const CONFIG = require('../db/config');
 
-// Маршрут для отображения деталей обращения
 router.get('/:appeal_id', async (req, res, next) => {
   let connection;
   try {
