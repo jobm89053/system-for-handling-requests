@@ -12,7 +12,7 @@ router.get('/:appeal_id', async (req, res, next) => {
     }
 
     connection = await mysql.createConnection(CONFIG);
-    const [rows] = await connection.execute('SELECT * FROM requests WHERE id = ?', [appealId]);
+    const [rows] = await connection.execute(Q.take_one_appeal, [appealId]);
     await connection.end();
 
     if (rows.length === 0) {

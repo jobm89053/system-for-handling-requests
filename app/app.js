@@ -6,7 +6,7 @@ const logger = require('morgan');
 
 const all_appealRouter = require('./routes/all_appeal');
 const create_appealRouter = require('./routes/create_appeal');
-const appeal_detailRouter = require('./routes/appeal_detail');
+const appeal_detailRouter = require('./routes/appeal_details');
 const appeal_solutionRouter = require('./routes/appeal_solution');
 
 const app = express();
